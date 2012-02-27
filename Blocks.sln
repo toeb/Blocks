@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A45C94
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "..\Core\Core\Core.csproj", "{2C36DBF7-D2E6-4F2D-BEAD-0226748BFCAF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Dependencies\Core\trunk\Core\Core.csproj", "{2C36DBF7-D2E6-4F2D-BEAD-0226748BFCAF}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution

@@ -101,10 +101,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Core\Core\Core.csproj">
-      <Project>{2C36DBF7-D2E6-4F2D-BEAD-0226748BFCAF}</Project>
-      <Name>Core</Name>
-    </ProjectReference>
     <ProjectReference Include="..\BlocksCanvas\BlocksCanvas.csproj">
       <Project>{51C5BB8D-A71D-4674-B152-45564255752C}</Project>
       <Name>BlocksCanvas</Name>
@@ -112,6 +108,10 @@
     <ProjectReference Include="..\Blocks\Blocks.csproj">
       <Project>{47D1C9A4-5505-4C2A-8C05-FBF8E585D5A1}</Project>
       <Name>Blocks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dependencies\Core\trunk\Core\Core.csproj">
+      <Project>{2C36DBF7-D2E6-4F2D-BEAD-0226748BFCAF}</Project>
+      <Name>Core</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
