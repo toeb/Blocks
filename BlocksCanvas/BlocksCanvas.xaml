@@ -1,0 +1,136 @@
+﻿<UserControl x:Class="BlocksCanvas.BlocksCanvas"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:blocks="clr-namespace:Blocks;assembly=Blocks"
+             xmlns:blocksCanvas="clr-namespace:BlocksCanvas"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ei="http://schemas.microsoft.com/expression/2010/interactions"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             d:DesignHeight="300"
+             d:DesignWidth="300"
+             mc:Ignorable="d">
+    <ListBox Name="blocksListBox"
+             Margin="0,0,0,32"
+             Background="Transparent"
+             ItemsSource="{Binding}">
+        <ListBox.Resources>
+            <blocksCanvas:MyConverter x:Key="MyConverter1" x:Name="myConverter" />
+            <DataTemplate DataType="{x:Type blocks:Block}">
+                <Grid>
+                    <Rectangle blocksCanvas:DraggableExtender.CanDrag="True"
+                               Fill="White"
+                               Stroke="Black" />
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel.Resources>
+                            <ControlTemplate x:Key="ConnectorListBoxControlTemplate" TargetType="{x:Type ListBox}">
+                                <StackPanel VerticalAlignment="Center"
+                                            Background="Transparent"
+                                            IsItemsHost="True"
+                                            Orientation="Vertical" />
+                            </ControlTemplate>
+                            <Style x:Key="ConnectorItemContainerStyle" TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                            <Grid x:Name="connectorGrid" Background="Transparent">
+                                                <ContentPresenter x:Name="connectorPresenter" />
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                            <DataTemplate DataType="{x:Type blocks:Connector}">
+
+                                <ContentControl DataContext="{Binding Converter={StaticResource MyConverter1}}">
+                                    <ContentControl.Template>
+                                        <ControlTemplate>
+                                            <Grid Width="15"
+                                                  Height="15"
+                                                  Margin="2">
+                                                <Rectangle x:Name="connectorRectangle"
+                                                           blocksCanvas:MarkingExtender.ConnectorMarked="True"
+                                                           Fill="Gray"
+                                                           ToolTip="{Binding Name}" />
+
+                                                <Label x:Name="connectorLabel"
+                                                       Margin="0"
+                                                       HorizontalContentAlignment="Center"
+                                                       VerticalContentAlignment="Center"
+                                                       Content=""
+                                                       Foreground="White"
+                                                       Padding="0" />
+                                            </Grid>
+                                            <ControlTemplate.Triggers>
+                                                <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                                                    <Setter TargetName="connectorRectangle" Property="Fill" Value="Blue" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsAcceptingConnections}" Value="True">
+                                                    <Setter TargetName="connectorRectangle" Property="Stroke" Value="Blue" />
+                                                    <Setter TargetName="connectorRectangle" Property="StrokeThickness" Value="2" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Connector.IsConnected}" Value="True">
+                                                    <Setter TargetName="connectorRectangle" Property="Fill" Value="Green" />
+                                                    <Setter TargetName="connectorLabel" Property="Content" Value="{Binding Path=Connector.Connection.Name}" />
+
+                                                </DataTrigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </ContentControl.Template>
+                                </ContentControl>
+
+                            </DataTemplate>
+
+                        </StackPanel.Resources>
+                        <ListBox ItemContainerStyle="{StaticResource ConnectorItemContainerStyle}"
+                                 ItemsSource="{Binding Sinks}"
+                                 MouseDoubleClick="SinksDoubleClicked"
+                                 Template="{StaticResource ConnectorListBoxControlTemplate}" />
+                        <ContentControl Content="{Binding Content}" />
+                        <Label VerticalAlignment="Center"
+                               Content="{Binding Name}"
+                               IsHitTestVisible="False" />
+                        <ListBox ItemContainerStyle="{StaticResource ConnectorItemContainerStyle}"
+                                 ItemsSource="{Binding Sources}"
+                                 MouseDoubleClick="SourcesDoubleClicked"
+                                 Template="{StaticResource ConnectorListBoxControlTemplate}" />
+                    </StackPanel>
+                </Grid>
+            </DataTemplate>
+
+        </ListBox.Resources>
+        <ListBox.ItemContainerStyle>
+            <Style TargetType="{x:Type ListBoxItem}">
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                            <ContentPresenter x:Name="presenter"
+                                              Width="Auto"
+                                              Height="Auto" />
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsSelected" Value="True">
+                                    <Setter TargetName="presenter" Property="Effect">
+                                        <Setter.Value>
+                                            <DropShadowEffect BlurRadius="20"
+                                                              ShadowDepth="6"
+                                                              Color="Black" />
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ListBox.ItemContainerStyle>
+        <ListBox.Template>
+            <ControlTemplate TargetType="{x:Type ListBox}">
+                <Canvas Width="Auto"
+                        Height="Auto"
+                        IsItemsHost="True" />
+            </ControlTemplate>
+        </ListBox.Template>
+
+    </ListBox>
+
+</UserControl>
